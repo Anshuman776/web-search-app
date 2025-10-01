@@ -1,0 +1,25 @@
+import logging
+from scrape import scrape_from_topic
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+def process_topic(topic):
+    """Get, scrape, and clean content for a topic"""
+    try:
+        scraped_results = scrape_from_topic(topic)
+        
+        cleaned_content = []
+        for result in scraped_results:
+            content = result['content']
+            url = result['url']
+            cleaned_content.append(f"Source: {url}\n\n{content}\n")
+        
+        return '\n===\n'.join(cleaned_content)
+    except Exception as e:
+        logger.error(f"Error processing topic {topic}: {e}")
+        return None
+
+streamlit==1.27.2
+python-dotenv==1.0.0
+requests==2.31.0
