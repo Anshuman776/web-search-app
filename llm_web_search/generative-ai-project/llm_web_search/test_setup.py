@@ -1,7 +1,5 @@
 import streamlit as st
-import os
 import requests
-from dotenv import load_dotenv
 
 # Page configuration
 st.set_page_config(
@@ -10,8 +8,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# Replace environment variables with Streamlit secrets
-SERPER_API_KEY = st.secrets["SERPER_API_KEY"]
+# Get API key from Streamlit secrets
+try:
+    SERPER_API_KEY = st.secrets["SERPER_API_KEY"]
+except Exception as e:
+    st.error("Missing API key in Streamlit secrets")
+    st.stop()
 
 def search_web(query):
     """Perform web search using Serper API"""
@@ -56,5 +58,8 @@ if st.button("Search"):
                 st.error("No results found")
     else:
         st.warning("Please enter a search query")
+
+
+
 
 
